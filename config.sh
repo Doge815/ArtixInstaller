@@ -99,7 +99,7 @@ else
     desktopPackages=""
 fi
 
-debug="y"
+debug="n"
 
 if [ $debug == "y" ]
 then

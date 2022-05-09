@@ -47,7 +47,7 @@ fi
 if [ $installType == 4 ]
 then
     echo -e "$bootDrivePassword\n" | cryptsetup -q --iter-time 100 luksFormat "$bootDrive"
-    echo -e "$bootDrivePassword\n" | cryptsetup open "$drive"2 boot
+    echo -e "$bootDrivePassword\n" | cryptsetup open "$bootDrive" boot
 fi
 
 #if installType is not 3, format boot partition as FAT32
@@ -88,7 +88,7 @@ then
 fi
 
 #install base system
-packages="base base-devel runit elogind-runit btrfs-progs cryptsetup dhcpcd dhcpcd-runit vim bash-completion linux-hardened linux-firmware linux-hardened-headers artix-archlinux-support archlinux-mirrorlist efibootmgr git go doas"
+packages="base base-devel runit elogind-runit btrfs-progs cryptsetup-runit dhcpcd dhcpcd-runit vim bash-completion linux-hardened linux-firmware linux-hardened-headers artix-archlinux-support archlinux-mirrorlist efibootmgr git go doas"
 packages="$packages $drivers $desktopPackages"
 
 #installType 3 and 4 require a different version of grub

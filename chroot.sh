@@ -68,3 +68,10 @@ else
 fi
 grub-mkconfig -o /boot/grub/grub.cfg
 
+if [ $installType == 4 ]
+then
+    dd bs=512 count=4 if=/dev/random of=/etc/boot.key iflag=fullblock
+    echo -e "$bootDrivePassword\n" | cryptsetup luksAddKey "$bootDrive" /etc/boot.key
+    echo "boot  $bootDrive  /etc/boot.key" >> /etc/crypttab
+fi
+
