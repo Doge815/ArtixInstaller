@@ -50,10 +50,6 @@ desktop="y"
 #VirtualBox drivers
 #drivers="$drivers virtualbox-guest-utils"
 
-#Intel microcode
-#drivers="$drivers intel-ucode"
-
-
 ### DON'T EDIT THE FOLLOWING LINES ###
 
 
