@@ -17,14 +17,15 @@ The installation script provides 4 different installation types, select the righ
 | 4           | - unencrypted EFI partition<br> - encrypted boot partiton<br> - encrypyed root partition | all files + kernel encrypted | Requires 2 passwords                                           |
 ## Usage
 To get the scripts to your life environment you can use one of the following methods:
-#### 1. Clone the repo
-Download the installation medium and boot it; then clone the git Repository 
+### 1. Download the repository
+Download the installation medium and boot it; then download the latest release.
 ```sh
 su
-git clone https://github.com/Doge815/ArtixInstaller.git
-cd ArtixInstaller
+curl -OL https://github.com/Doge815/ArtixInstaller/archive/v1.0.tar.gz
+tar -xzf v1.0.tar.gz
+cd ArtixInstaller-1.0
 ```
-#### 2. Use [transfer.sh](https://transfer.sh/)
+### 2. Use [transfer.sh](https://transfer.sh/)
 If you want a convenient way to use modified scripts without forking the reopository, use this method.
 Firstly clone the repository on your PC (not inside the life environment of course).
 ```sh
@@ -44,7 +45,7 @@ Write the link down and boot up your life environment.
 Now download the archive with your scripts and extract them.
 ```sh
 su
-curl https://transfer.sh/xxxxxx/scripts.tar -o scripts.tar
+curl -OL https://transfer.sh/xxxxxx/scripts.tar
 tar -xf scripts.sh
 ```
 ### Modify the config file
