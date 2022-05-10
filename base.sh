@@ -109,5 +109,23 @@ artix-chroot /mnt ./chroot.sh
 #remove scripts
 shred -u /mnt/chroot.sh /mnt/config.sh config.sh *.tar
 
+#unount drives
+if [ $installType -lt 3 ]
+then
+    umount /mnt/boot
+fi
+if [ $installType -gt 2 ]
+then
+    umount /mnt/esp
+fi
+umount /mnt
+if [ $installType -gt 1 ]
+then
+    cryptsetup close /dev/mapper/root
+fi
+if [ $installType == 4 ]
+then
+    cryptsetup close /dev/mapper/boot
+fi
 
 reboot
