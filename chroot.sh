@@ -38,9 +38,14 @@ pacman -Rn --noconfirm sudo
 sed -i "s/BINARIES=()/BINARIES=(\/usr\/sbin\/btrfs)/" "/etc/mkinitcpio.conf"
 if [ $installType != 1 ]
 then
-    sed -i "s/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base udev autodetect keyboard keymap modconf block encrypt filesystems keyboard fsck)/" "/etc/mkinitcpio.conf"
+    newhooks="base udev autodetect keyboard keymap modconf block"
+    if [ $installType == 4 ]
+    then
+        newhooks="$newhooks chkcryptoboot"
+    fi
+    newhooks="$newhooks encrypt filesystems keyboard fsck"
+    sed -i "s/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=($newhooks)/" "/etc/mkinitcpio.conf"
 fi
-mkinitcpio -p linux-hardened
 
 #install yay
 runuser -l $userName -c 'git clone https://aur.archlinux.org/yay.git && cd yay && makepkg --noconfirm'
@@ -54,9 +59,31 @@ then
     sed -i "s/#GRUB_ENABLE_CRYPTODISK=y/GRUB_ENABLE_CRYPTODISK=y/" "/etc/default/grub"
 fi
 
+#if installType is 4, add mkinitcpio-chkcryptoboot
+if [ $installType == 4 ]
+then
+    runuser -l $userName -c 'yay -S --sudo doas --removemake --noconfirm mkinitcpio-chkcryptoboot'
+    sed -i "s/BOOTMODE=/BOOTMODE=efi/" "/etc/default/chkcryptoboot.conf"
+    dsk=${efiDrive//\//\\/}
+    sed -i "s/BOOT_PARTITION=/BOOT_PARTITION=$dsk /" "/etc/default/chkcryptoboot.conf"
+    sed -i "s/ESP=/ESP=\/esp/" "/etc/default/chkcryptoboot.conf"
+    sed -i "s/EFISTUB=/EFISTUB=\/esp\/EFI\/grub\/grubx64.efi/" "/etc/default/chkcryptoboot.conf"
+
+    name=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 128)
+    value=$(tr -dc A-Za-z0-9 </dev/urandom | head -c 128)
+
+    sed -i "s/CMDLINE_NAME=/CMDLINE_NAME=$name/" "/etc/default/chkcryptoboot.conf"
+    sed -i "s/CMDLINE_VALUE=/CMDLINE_VALUE=$value/" "/etc/default/chkcryptoboot.conf"
+fi
+
 if [ $installType -gt 1 ]
 then
-    sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"cryptdevice=UUID=$(blkid -s UUID -o value "$rootDrive"):root\"/" "/etc/default/grub"
+    args="cryptdevice=UUID=$(blkid -s UUID -o value "$rootDrive"):root"
+    if [ $installType == 4 ]
+    then
+        args="$args $name=$value"
+    fi
+    sed -i "s/GRUB_CMDLINE_LINUX=\"\"/GRUB_CMDLINE_LINUX=\"$args \"/" "/etc/default/grub"
 fi
 
 
@@ -66,6 +93,7 @@ then
 else
     grub-install --target=x86_64-efi --efi-directory=/esp --bootloader-id=grub
 fi
+mkinitcpio -p linux-hardened
 grub-mkconfig -o /boot/grub/grub.cfg
 
 if [ $installType == 4 ]
@@ -74,4 +102,3 @@ then
     echo -e "$bootDrivePassword\n" | cryptsetup luksAddKey "$bootDrive" /etc/boot.key
     echo "boot  $bootDrive  /etc/boot.key" >> /etc/crypttab
 fi
-
