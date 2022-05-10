@@ -119,7 +119,7 @@ artix-chroot /mnt ./chroot.sh
 shred -u /mnt/chroot.sh /mnt/config.sh config.sh *.tar
 
 #unount drives
-if [ $installType -lt 3 ]
+if [ $installType != 3 ]
 then
     umount /mnt/boot
 fi
