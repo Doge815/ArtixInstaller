@@ -101,8 +101,8 @@ if [[ $(cat /proc/cpuinfo | grep 'vendor') == *"Intel"* ]]
 then
 	packages="$packages intel-ucode"
 elif [[ $(cat /proc/cpuinfo | grep 'vendor') == *"Amd"* ]]
-	packages="$packages amd-ucode"
 then
+	packages="$packages amd-ucode"
 fi
 
 

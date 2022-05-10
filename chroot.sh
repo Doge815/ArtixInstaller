@@ -52,6 +52,8 @@ runuser -l $userName -c 'git clone https://aur.archlinux.org/yay.git && cd yay &
 pacman -U --noconfirm "/home/$userName"/yay/*.zst
 rm -rf "/home/$userName/yay"
 
+runuser -l $userName -c 'yay -S --sudo doas --removemake --noconfirm mkinitcpio-firmware'
+
 #if installType is 3 or 4, install grub with luks2 support and enable cryptodisk
 if [ $installType -gt 2 ]
 then
