@@ -60,7 +60,7 @@ installScripts="y"
 #drivers="$drivers virtualbox-guest-utils"
 
 #additional software
-apps="ranger atool w3m ncmpcpp btop neofetch gvim bash-completion"
+apps="ranger atool ueberzug ncmpcpp btop neofetch gvim bash-completion"
 
 #desktop apps won't be installed, if desktop is n
 desktopApps="dmenu picom nitrogen wmname ttf-dejavu"
