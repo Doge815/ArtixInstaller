@@ -39,6 +39,15 @@ compName="ArtixBox"
 #if computer won't be used with a GUI, change to n
 desktop="y"
 
+#install my custom DWM build, won't be installed if desktop is n
+installDWM="y"
+
+#install my custom ST build, won't be installed if desktop is n
+installST="y"
+
+#install my custom config files and a few scripts I use regularly
+installScripts="y"
+
 #drivers and additional software, uncomment lines to add them
 
 #NVIDIA video drivers
@@ -49,6 +58,14 @@ desktop="y"
 
 #VirtualBox drivers
 #drivers="$drivers virtualbox-guest-utils"
+
+#additional software
+apps="ranger atool w3m ncmpcpp btop neofetch gvim bash-completion"
+
+#desktop apps won't be installed, if desktop is n
+desktopApps="dmenu picom nitrogen wmname ttf-dejavu"
+
+
 
 ### DON'T EDIT THE FOLLOWING LINES ###
 
@@ -93,11 +110,14 @@ then
     desktopPackages="xorg xorg-xrandr xorg-xinit libxinerama pipewire pipewire-alsa pipewire-pulse pipewire-jack wireplumber"
 else
     desktopPackages=""
+	desktopApps=""
+    installDWM="n"
+    installST="n"
 fi
 
 debug="n"
 
 if [ $debug == "y" ]
 then
-    echo -e " EFI Drive: $efiDrive \n Boot Drive: $bootDrive \n Root Drive: $rootDrive \n Boot Mount: $mountBootDrive \n Root Mount: $mountRootDrive \n Drivers: $drivers \n Desktop Packages: $desktopPackages"
+    echo -e " EFI Drive: $efiDrive \n Boot Drive: $bootDrive \n Root Drive: $rootDrive \n Boot Mount: $mountBootDrive \n Root Mount: $mountRootDrive \n Drivers: $drivers \n Desktop Packages: $desktopPackages \n Apps: $apps \n Desktop Apps: $desktopApps \n Install DWM: $installDWM \n Install ST: $installST"
 fi

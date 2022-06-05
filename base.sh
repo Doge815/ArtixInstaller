@@ -68,7 +68,7 @@ mkfs.btrfs -f "$mountRootDrive"
 mount "$mountRootDrive" /mnt
 btrfs subvolume create /mnt/Artix
 umount "$mountRootDrive"
-mount "$mountRootDrive" -o defaults,relatime,ssd,space_cache,subvol=Artix /mnt
+mount "$mountRootDrive" -o defaults,relatime,ssd,subvol=Artix /mnt
 btrfs filesystem label /mnt Artix
 
 #create boot directory
@@ -88,7 +88,7 @@ then
 fi
 
 #install base system
-packages="base base-devel runit elogind-runit btrfs-progs cryptsetup-runit dhcpcd dhcpcd-runit vim bash-completion linux-hardened linux-firmware linux-hardened-headers artix-archlinux-support archlinux-mirrorlist efibootmgr git go doas"
+packages="base base-devel runit elogind-runit btrfs-progs cryptsetup-runit dhcpcd dhcpcd-runit linux-hardened linux-firmware linux-hardened-headers artix-archlinux-support archlinux-mirrorlist efibootmgr git go doas"
 packages="$packages $drivers $desktopPackages"
 
 #installType 3 and 4 require a different version of grub

@@ -11,7 +11,7 @@ sed -i "s/#Color/Color/g; s/#ParallelDownloads = 5/ParallelDownloads = 20/g" "/e
 perl -0777 -pi -e 's/#\[lib32\]\n#/\[lib32\]\n/smg' /etc/pacman.conf
 echo -e "# Arch\n\n[extra]\nInclude = /etc/pacman.d/mirrorlist-arch\n\n[community]\nInclude = /etc/pacman.d/mirrorlist-arch\n\n[multilib]\nInclude = /etc/pacman.d/mirrorlist-arch\n" >> /etc/pacman.conf
 pacman-key --populate archlinux
-pacman -Syyuu 
+pacman -Syyuu --noconfirm $apps $desktopApps
 
 ln -sf /usr/share/zoneinfo/"$zone" /etc/localtime
 ln -s /etc/runit/sv/dhcpcd /etc/runit/runsvdir/default/
@@ -103,4 +103,18 @@ then
     dd bs=512 count=4 if=/dev/random of=/etc/boot.key iflag=fullblock
     echo -e "$bootDrivePassword\n" | cryptsetup luksAddKey "$bootDrive" /etc/boot.key
     echo "boot  $bootDrive  /etc/boot.key" >> /etc/crypttab
+fi
+
+if [ $installScripts = "y" ]
+then
+    runuser -l $userName -c 'git clone https://github.com/Doge815/Configs.git && cd Configs && ./install.sh'
+fi
+
+if [ $installDWM= "y" ]
+then
+    runuser -l $userName -c 'git clone https://github.com/Doge815/DWM.git && cd DWM && doas make install && doas pacman -S --noconfirm noto-fonts'
+fi
+if [ $installST= "y" ]
+then
+    runuser -l $userName -c 'git clone https://github.com/Doge815/ST.git && cd ST && doas make install'
 fi
