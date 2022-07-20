@@ -12,7 +12,7 @@ The installation script provides 4 different installation types, select the righ
 | Number| Partitions | Advantages | Disadvantages |
 |-|-|-|-|
 | 1 (Default) | - unencrypted boot partiton<br> - unencrypted root partition                     | no password required         | all files readable if different OS is used                         |
-| 2           | - unencrypted boot partiton<br> - encrypyed root partition                       | all files encrypted          | an attacker can modify the kernel to extract the root Password |
+| 2           | - unencrypted boot partiton<br> - encrypted root partition                       | all files encrypted          | an attacker can modify the kernel to extract the root Password |
 | 3           | - unencrypted EFI partition<br> - encrypted boot + root partition                | all files + kernel encrypted | Grub's Luks encryption is really slow                          |
 | 4           | - unencrypted EFI partition<br> - encrypted boot partiton<br> - encrypyed root partition | all files + kernel encrypted | Requires 2 passwords                                           |
 ## Usage
